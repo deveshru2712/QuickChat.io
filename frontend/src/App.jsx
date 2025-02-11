@@ -1,16 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 const App = () => {
   const [list, setList] = useState([]);
   const [input, setInput] = useState("");
+  const [socket, setSocket] = useState(null);
 
-  const socket = io("http://localhost:3000");
+  useEffect(() => {
+    const newSocket = io("http://localhost:3000");
+
+    newSocket.on("connect", () => {
+      console.log("connected");
+    });
+
+    //receiving the message from the backend
+    newSocket.on("message", (data) => {
+      setList((prev) => [...prev, data]);
+    });
+
+    newSocket.on("disconnect", () => {
+      console.log("Disconnected from server");
+    });
+
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (input) {
-      setList((prev) => [...prev, input]);
+    if (input && socket) {
+      //sending the message from the frontend to the backend
+      socket.emit("chat message", input);
+
+      // setList((prev) => [...prev, input]);
       setInput("");
     }
     return;

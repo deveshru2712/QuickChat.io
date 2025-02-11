@@ -27,6 +27,10 @@ dotenv.config();
 io.on("connection", (socket) => {
   console.log("user connected:", socket.id);
 
+  socket.on("chat message", (data) => {
+    socket.broadcast.emit("message", data);
+  });
+
   socket.on("disconnect", () => {
     console.log("user disconnected:", socket.id);
   });
@@ -36,11 +40,11 @@ app.use("/api/auth", authRouter);
 
 const port = process.env.PORT;
 
-// app.get("/", (req, res) => {
-//   res.send("hii there");
-// });
+app.get("/", (req, res) => {
+  res.send("hii there");
+});
 
 server.listen(port, () => {
-  // connectToDb();
+  connectToDb();
   console.log(`server is running on the port: ${port}`);
 });
