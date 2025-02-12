@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import { facebook, google, logo } from "../assets";
 
@@ -8,6 +9,29 @@ const SignupPage = () => {
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/signup",
+        {
+          username,
+          fullname,
+          email,
+          password,
+        }
+      );
+
+      if (response.data.status >= 200 && response.data.status < 300) {
+        console.log("Unable to create an account ");
+      } else {
+        console.log("account created successfully");
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  };
 
   return (
     <div className="h-screen w-screen p-4 flex justify-center items-center gap-2 py-16">
@@ -25,7 +49,7 @@ const SignupPage = () => {
         </div>
 
         <div className="w-1/2">
-          <form className="flex flex-col w-full gap-2">
+          <form className="flex flex-col w-full gap-2" onSubmit={handleSubmit}>
             <div className="flex flex-col items-start justify-between gap-2">
               <label htmlFor="UsernameField">Username</label>
               <input

@@ -10,18 +10,20 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await axios.post("/api/auth/login", {
+        email,
+        password,
+      });
 
-    const response = await axios.post("/api/auth/login", {
-      email,
-      password,
-    });
-
-    if (response.data.status >= 200 && response.data.status < 300) {
-      console.log("Unable to login ");
+      if (response.data.status >= 200 && response.data.status < 300) {
+        console.log("Unable to login ");
+      } else {
+        console.log("successfully logged");
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
     }
-
-    console.log(response);
-    console.log("successfully logged");
   };
 
   return (
