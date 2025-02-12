@@ -5,11 +5,13 @@ const App = () => {
   const [list, setList] = useState([]);
   const [input, setInput] = useState("");
   const [socket, setSocket] = useState(null);
+  const [socketId, setSocketId] = useState(null);
 
   useEffect(() => {
     const newSocket = io("http://localhost:3000");
 
     newSocket.on("connect", () => {
+      setSocketId(newSocket.id);
       console.log("connected");
     });
 
@@ -33,9 +35,8 @@ const App = () => {
     e.preventDefault();
     if (input && socket) {
       //sending the message from the frontend to the backend
+      
       socket.emit("chat message", input);
-
-      // setList((prev) => [...prev, input]);
       setInput("");
     }
     return;
@@ -53,7 +54,7 @@ const App = () => {
                     key={index}
                     className="text-xl w-full bg-black/60 text-white px-4 py-2 rounded-lg"
                   >
-                    {items}
+                    {socketId}: {items}
                   </li>
                 ))}
               </ul>
