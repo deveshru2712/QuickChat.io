@@ -11,19 +11,15 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await axios.post(
-      `http://localhost:3000/api/auth/login`,
-      { email, password },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await axios.post("/api/auth/login", {
+      email,
+      password,
+    });
 
-    if (!response.ok) {
+    if (response.data.status >= 200 && response.data.status < 300) {
       console.log("Unable to login ");
     }
+
     console.log(response);
     console.log("successfully logged");
   };
