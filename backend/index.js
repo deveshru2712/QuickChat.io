@@ -20,6 +20,8 @@ app.get("/", (req, res) => {
   res.send("hii there");
 });
 
+app.use("/api/auth", authRouter);
+
 server.listen(port, () => {
   connectToDb();
   console.log(`server is running on the port: ${port}`);
