@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 const Nav = () => {
+  const [isClicked, setIsClicked] = useState(false);
+
   return (
     <div className="w-full h-20 p-2 border-b flex justify-between items-center">
       <div className="flex justify-start items-center gap-6">
@@ -18,9 +20,32 @@ const Nav = () => {
         </div>
       </div>
       <div>
-        <button className="cursor-pointer text-slate-400 rounded-full">
+        <button
+          className="cursor-pointer text-slate-400 rounded-full relative"
+          onClick={() => setIsClicked((prev) => !prev)}
+        >
           <BsThreeDotsVertical size={26} />
         </button>
+
+        {/* this id dropdown */}
+        {isClicked && (
+          <div className="dropdown dropdown-bottom absolute right-10 top-50">
+            <ul
+              className="dropdown-content menu bg-white
+             rounded-box z-[1] w-52 p-2 shadow rounded-lg"
+            >
+              <li className="cursor-pointer text-lg font-medium">
+                <a>Group Setting</a>
+              </li>
+              <li className="cursor-pointer text-lg font-medium">
+                <a>Leave the group</a>
+              </li>
+              <li className="cursor-pointer text-lg font-medium">
+                <a>Switch Mode</a>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
