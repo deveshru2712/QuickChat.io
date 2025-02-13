@@ -1,29 +1,50 @@
-import React, { lazy, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 import { google, facebook, logo } from "../assets";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("/api/auth/login", {
-        email,
-        password,
-      });
+  const {
+    mutate: LoginMutation,
+    isPending,
+    isError,
+    error,
+  } = useMutation({
+    mutationFn: async ({ email, password }) => {
+      try {
+        const response = await axios.post("/api/auth/login", {
+          email,
+          password,
+        });
 
-      if (response.data.status >= 200 && response.data.status < 300) {
-        console.log("Unable to login ");
-      } else {
-        console.log("successfully logged");
+        if (response.status >= 200 && response.status < 300) {
+          return response.data;
+        } else {
+          throw new Error("Login failed");
+        }
+      } catch (error) {
+        console.log(error.response?.data?.message || "Login failed");
       }
-    } catch (error) {
-      console.log(error.response.data.message);
-    }
+    },
+    // onSuccess: data,
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    LoginMutation(formData);
+  };
+
+  const handleInputChange = (e) => {
+    e.preventDefault();
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -49,8 +70,9 @@ const LoginPage = () => {
                 type="text"
                 id="emailField"
                 placeholder="Example@gmail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
                 className="w-full border-2 px-3 py-1 rounded-md outline-none"
               />
             </div>
@@ -59,8 +81,9 @@ const LoginPage = () => {
               <input
                 type="password"
                 id="passwordField"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
                 placeholder="At least 6 characters"
                 className="w-full border-2 px-3 py-1 rounded-md outline-none"
               />
