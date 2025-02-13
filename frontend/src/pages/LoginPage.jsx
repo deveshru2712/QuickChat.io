@@ -25,6 +25,7 @@ const LoginPage = () => {
         });
 
         if (response.status >= 200 && response.status < 300) {
+          console.log("Successfully Logged in");
           return response.data;
         } else {
           throw new Error("Login failed");

@@ -3,34 +3,54 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import { facebook, google, logo } from "../assets";
+import { useMutation } from "@tanstack/react-query";
 
 const SignupPage = () => {
-  const [username, setUsername] = useState("");
-  const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    fullname: "",
+    email: "",
+    password: "",
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/signup",
-        {
+  const {
+    mutate: SignUpFn,
+    isPending,
+    isError,
+    error,
+  } = useMutation({
+    mutationFn: async ({ username, fullname, email, password }) => {
+      try {
+        const response = await axios.post(`/api/auth/signup`, {
           username,
           fullname,
           email,
           password,
-        }
-      );
+        });
 
-      if (response.data.status >= 200 && response.data.status < 300) {
-        console.log("Unable to create an account ");
-      } else {
-        console.log("account created successfully");
+        if (response.status >= 200 && response.status < 300) {
+          console.log("Account created Successfully");
+          return response.data;
+        } else {
+          throw new Error("Failed to create an account");
+        }
+      } catch (error) {
+        console.log(
+          error.response?.data?.message || "Failed to create an account"
+        );
       }
-    } catch (error) {
-      console.log(error.response.data.message);
-    }
+    },
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    SignUpFn(formData);
+  };
+
+  const handelInputChange = (e) => {
+    e.preventDefault();
+
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
@@ -56,8 +76,9 @@ const SignupPage = () => {
                 type="text"
                 id="UsernameField"
                 placeholder="user@name"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={formData.username}
+                name="username"
+                onChange={handelInputChange}
                 className="w-full border-2 px-3 py-1 rounded-md outline-none"
               />
             </div>
@@ -66,8 +87,9 @@ const SignupPage = () => {
               <input
                 type="text"
                 id="FullnameField"
-                value={fullname}
-                onChange={(e) => setFullname(e.target.value)}
+                value={formData.fullname}
+                name="fullname"
+                onChange={handelInputChange}
                 placeholder="Rohan ..."
                 className="w-full border-2 px-3 py-1 rounded-md outline-none"
               />
@@ -78,8 +100,9 @@ const SignupPage = () => {
               <input
                 type="text"
                 id="EmailField"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                name="email"
+                onChange={handelInputChange}
                 placeholder="Example@gamil.com"
                 className="w-full border-2 px-3 py-1 rounded-md outline-none"
               />
@@ -90,8 +113,9 @@ const SignupPage = () => {
               <input
                 type="password"
                 id="passwordField"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                name="password"
+                onChange={handelInputChange}
                 placeholder="At least 6 characters"
                 className="w-full border-2 px-3 py-1 rounded-md outline-none"
               />
