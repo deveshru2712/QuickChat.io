@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { lazy, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -89,12 +89,22 @@ const LoginPage = () => {
 
         <div className="future-login w-1/2 flex flex-col gap-5">
           <div className="w-full flex justify-center items-center gap-4 bg-slate-100 p-2 rounded-lg cursor-pointer">
-            <img src={google} alt="google_logo" className="size-6" />
+            <img
+              src={google}
+              alt="google_logo"
+              loading="lazy"
+              className="size-6"
+            />
             <span className="text-base font-medium">Sign in with Google</span>
           </div>
 
           <div className="w-full flex justify-center items-center gap-4 bg-slate-100 p-2 rounded-lg cursor-pointer">
-            <img src={facebook} alt="facebook_logo" className="size-6" />
+            <img
+              src={facebook}
+              alt="facebook_logo"
+              loading="lazy"
+              className="size-6"
+            />
             <span className="text-base font-medium">Sign in with Facebook</span>
           </div>
 
@@ -107,7 +117,12 @@ const LoginPage = () => {
         </div>
       </div>
       <div className="flex flex-1 h-full px-10">
-        <img src={logo} alt="logo" className="w-full h-full rounded-lg" />
+        <img
+          src={logo}
+          alt="logo"
+          loading="lazy"
+          className="w-full h-full rounded-lg"
+        />
       </div>
     </div>
   );

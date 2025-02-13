@@ -1,5 +1,5 @@
-import google from "../assets/google.png";
-import facebook from "../assets/facebook.png";
-import logo from "../assets/bg.jpg";
+import google from "../assets/images/google.png";
+import facebook from "../assets/images/facebook.png";
+import logo from "../assets/images/bg.jpg";
 
 export { google, facebook, logo };
