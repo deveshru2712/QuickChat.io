@@ -13,3 +13,11 @@
   font-family: Gilroy;
   src: url(./assets/Fonts/Gilroy-Medium.ttf);
 }
+
+.dropdown-content {
+  display: none;
+}
+
+.dropdown-content .dropdown-open {
+  display: block;
+}

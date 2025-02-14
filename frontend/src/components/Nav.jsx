@@ -37,7 +37,9 @@ const Nav = () => {
           </div>
           <ul
             tabIndex={0}
-            className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+            className={`dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow ${
+              isClicked ? "dropdown-open" : ""
+            }`}
           >
             <li>
               <a className="flex justify-between items-center">
@@ -51,10 +53,6 @@ const Nav = () => {
             </li>
           </ul>
         </div>
-        {/* <button className="cursor-pointer text-slate-400 rounded-full">
-
-          <BsThreeDotsVertical size={26} />
-        </button> */}
       </div>
     </div>
   );
