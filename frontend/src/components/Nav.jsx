@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { IoSettingsSharp } from "react-icons/io5";
+import { MdOutlineExitToApp } from "react-icons/md";
 
 const Nav = () => {
   const [isClicked, setIsClicked] = useState(false);
+
+  useEffect(() => {
+    console.log(isClicked);
+  }, [isClicked]);
 
   return (
     <div className="w-full h-20 p-2 border-b flex justify-between items-center">
@@ -20,32 +26,35 @@ const Nav = () => {
         </div>
       </div>
       <div>
-        <button
-          className="cursor-pointer text-slate-400 rounded-full relative"
-          onClick={() => setIsClicked((prev) => !prev)}
-        >
-          <BsThreeDotsVertical size={26} />
-        </button>
-
-        {/* this id dropdown */}
-        {isClicked && (
-          <div className="dropdown dropdown-bottom absolute right-10 top-50">
-            <ul
-              className="dropdown-content menu bg-white
-             rounded-box z-[1] w-52 p-2 shadow rounded-lg"
-            >
-              <li className="cursor-pointer text-lg font-medium">
-                <a>Group Setting</a>
-              </li>
-              <li className="cursor-pointer text-lg font-medium">
-                <a>Leave the group</a>
-              </li>
-              <li className="cursor-pointer text-lg font-medium">
-                <a>Switch Mode</a>
-              </li>
-            </ul>
+        <div className="dropdown dropdown-end">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn m-1"
+            onClick={() => setIsClicked((prev) => !prev)}
+          >
+            <BsThreeDotsVertical size={26} />
           </div>
-        )}
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+          >
+            <li>
+              <a className="flex justify-between items-center">
+                Group Settings <IoSettingsSharp size={24} />
+              </a>
+            </li>
+            <li>
+              <a className="flex justify-between items-center">
+                Leave Group <MdOutlineExitToApp size={24} />
+              </a>
+            </li>
+          </ul>
+        </div>
+        {/* <button className="cursor-pointer text-slate-400 rounded-full">
+
+          <BsThreeDotsVertical size={26} />
+        </button> */}
       </div>
     </div>
   );
