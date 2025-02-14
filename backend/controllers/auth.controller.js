@@ -122,3 +122,17 @@ export const logout = async (req, res) => {
     console.log(`Error in the logout controller: ${error.message}`);
   }
 };
+
+export const getMe = async (req, res) => {
+  const userId = req.userId;
+  try {
+    const user = await User.findById(userId).select("-password");
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to get the user info",
+    });
+    console.log(`Error in the getMe controller: ${error.message}`);
+  }
+};

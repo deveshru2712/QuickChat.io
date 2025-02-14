@@ -2,12 +2,21 @@ import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import "ldrs/trefoil";
+import { useQuery } from "@tanstack/react-query";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const SignupPage = lazy(() => import("./pages/SignupPage"));
 
 const App = () => {
+  const {} = useQuery({
+    queryKey: ["authUser"],
+    queryFn: async () => {
+      try {
+      } catch (error) {}
+    },
+  });
+
   return (
     <div className="w-screen h-screen flex justify-center items-center">
       <Suspense

@@ -12,7 +12,7 @@ const LoginPage = () => {
   });
 
   const {
-    mutate: LoginMutation,
+    mutate: LoginFn,
     isPending,
     isError,
     error,
@@ -40,7 +40,7 @@ const LoginPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    LoginMutation(formData);
+    LoginFn(formData);
   };
 
   const handleInputChange = (e) => {
