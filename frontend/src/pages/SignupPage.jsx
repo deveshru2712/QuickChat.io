@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import { facebook, google, logo } from "../assets";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const SignupPage = () => {
+  const queryClient = useQueryClient();
+
   const [formData, setFormData] = useState({
     username: "",
     fullname: "",
@@ -39,6 +41,9 @@ const SignupPage = () => {
           error.response?.data?.message || "Failed to create an account"
         );
       }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
   });
 

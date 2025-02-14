@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 import { google, facebook, logo } from "../assets";
 
 const LoginPage = () => {
+  const queryClient = useQueryClient();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -34,7 +36,9 @@ const LoginPage = () => {
         console.log(error.response?.data?.message || "Login failed");
       }
     },
-    // onSuccess: data,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
   });
 
   const handleSubmit = (e) => {
