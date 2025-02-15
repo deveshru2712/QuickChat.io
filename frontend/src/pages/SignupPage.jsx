@@ -43,7 +43,7 @@ const SignupPage = () => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
   });
 

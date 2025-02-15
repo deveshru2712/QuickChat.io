@@ -37,7 +37,7 @@ const LoginPage = () => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
   });
 

@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoSettingsSharp } from "react-icons/io5";
 import { MdOutlineExitToApp } from "react-icons/md";
 
 const Nav = () => {
   const [isClicked, setIsClicked] = useState(false);
-
-  useEffect(() => {
-    console.log(isClicked);
-  }, [isClicked]);
 
   return (
     <div className="w-full h-20 p-2 border-b flex justify-between items-center">

@@ -23,6 +23,7 @@ io.on("connection", (socket) => {
   //this set the  new user into users map so that we can get a online user array .
 
   socket.on("register", (userId) => {
+    console.log("connected:", userId);
     users.set(userId, socket.id);
 
     io.emit("userConnected", {
