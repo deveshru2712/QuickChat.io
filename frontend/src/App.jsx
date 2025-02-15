@@ -31,21 +31,50 @@ const App = () => {
     retry: false,
   });
 
-  useEffect(() => {
-    if (user) {
-      const newSocket = io("http://localhost:5000");
+  useQuery({
+    queryKey: ["socket"],
+    queryFn: () => {
+      if (user) {
+        const newSocket = io("http://localhost:5000");
+        newSocket.emit("register", user._id);
 
-      newSocket.emit("register", user._id);
+        newSocket.on("disconnect", () => {
+          console.log("Disconnected from server");
+        });
 
-      newSocket.on("disconnect", () => {
-        console.log("Disconnected from server");
-      });
+        return newSocket;
+      }
+      return null;
+    },
+    enabled: !!user, // Only re-render when user is available
+    retry: false,
+    onSuccess: (socket) => {
+      // Set the socket in the query client to be available elsewhere
+      queryClient.setQueryData(["socket"], socket);
+    },
+    onSettled: (socket) => {
+      // Disconnect the socket when the component unmounts
+      if (socket) {
+        socket.disconnect();
+      }
+    },
+  });
 
-      return () => {
-        newSocket.disconnect();
-      };
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     const newSocket = io("http://localhost:5000");
+
+  //     newSocket.emit("register", user._id);
+
+  //     newSocket.on("disconnect", () => {
+  //       console.log("Disconnected from server");
+  //     });
+
+  //     return () => {
+  //       newSocket.disconnect();
+  //     };
+  //   }
+  // }, [user]);
 
   if (isLoading) {
     return (
