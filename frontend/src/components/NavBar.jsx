@@ -1,8 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { TbEdit } from "react-icons/tb";
 import { IoSearchSharp } from "react-icons/io5";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
+import UserBox from "./UserBox";
 
 const NavBar = () => {
+  const [input, setInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [userList, setUserList] = useState([]);
+
+  const { data: search, isLoading } = useQuery({
+    queryKey: ["searchUser", searchTerm],
+    queryFn: async () => {
+      try {
+        console.log("call");
+        const response = await axios(`/api/user/${searchTerm}`);
+
+        setUserList(response.data.list);
+        return response.data.list;
+      } catch (error) {
+        console.log(error.message);
+        return null;
+      }
+    },
+    enabled: !!searchTerm,
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSearchTerm(input);
+  };
+
   return (
     <div className="w-full h-28 p-4 border-b ">
       <div className="flex flex-col items-start justify-center gap-2 ">
@@ -14,10 +44,15 @@ const NavBar = () => {
           </span>
         </div>
         {/* section-2 */}
-        <div className="w-full flex justify-between items-center">
-          <form className="bg-slate-200 w-full flex items-center gap-2 px-4 py-1 rounded-lg">
+        <div className="bg-slate-200 rounded-lg w-full flex justify-between items-center">
+          <form
+            onSubmit={handleSubmit}
+            className="w-full flex items-center gap-2 px-4 py-1 rounded-lg"
+          >
             <input
               type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
               placeholder="Search..."
               className="bg-transparent text-black w-full outline-none"
             />

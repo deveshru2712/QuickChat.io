@@ -60,22 +60,6 @@ const App = () => {
     },
   });
 
-  // useEffect(() => {
-  //   if (user) {
-  //     const newSocket = io("http://localhost:5000");
-
-  //     newSocket.emit("register", user._id);
-
-  //     newSocket.on("disconnect", () => {
-  //       console.log("Disconnected from server");
-  //     });
-
-  //     return () => {
-  //       newSocket.disconnect();
-  //     };
-  //   }
-  // }, [user]);
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex justify-center items-center">

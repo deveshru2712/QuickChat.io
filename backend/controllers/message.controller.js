@@ -64,8 +64,12 @@ export const getMessage = async (req, res) => {
   const { id } = req.params;
   const senderId = req.userId;
   try {
+    if (!id) {
+      throw new Error("User not found");
+    }
+
     const conversation = await Conversation.findOne({
-      participants: { $all: [senderId, userToChatId] },
+      participants: { $all: [senderId, id] },
     }).populate("messages");
 
     if (!conversation) {
